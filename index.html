@@ -1,1 +1,29 @@
-Hello World
+<html>
+
+<head>
+</head>
+
+<body>
+    <textarea id="input" cols="70" rows="20"></textarea>
+    <textarea id="output" cols="70" rows="20"></textarea>
+    <br />
+    <button id="dedupe">Dedupe</button>
+    <script>
+    var button = document.getElementById('dedupe');
+
+    button.onclick = function(e) {
+        var inputElem = document.getElementById('input');
+        var outputElem = document.getElementById('output');
+        var inputSplit = input.value.split('\n');
+
+        var counter = {};
+        inputSplit.forEach(function(i) {
+            counter[i] = (counter[i] || 0) + 1;
+        });
+
+        outputElem.value = Object.keys(counter).join('\n');
+    }
+    </script>
+</body>
+
+</html>
