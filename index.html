@@ -7,11 +7,21 @@
     <textarea id="input" cols="70" rows="20"></textarea>
     <textarea id="output" cols="70" rows="20"></textarea>
     <br />
-    <button id="dedupe">Dedupe</button>
+    <select id="sort">
+        <option>First occurrence</option>
+        <option>Last occurrence</option>
+        <option>Most occurrences</option>
+        <option>Least occurrences</option>
+        <option>Ascending</option>
+        <option>Descending</option>
+    </select>
+    <button id="list">List</button>
+    <button id="table">Table</button>
     <script>
-    var button = document.getElementById('dedupe');
+    document.getElementById('list').onclick = countStuff;
+    document.getElementById('table').onclick = countStuff;
 
-    button.onclick = function(e) {
+    function countStuff(e) {
         var inputElem = document.getElementById('input');
         var outputElem = document.getElementById('output');
         var inputSplit = input.value.split('\n');
@@ -21,7 +31,114 @@
             counter[i] = (counter[i] || 0) + 1;
         });
 
-        outputElem.value = Object.keys(counter).join('\n');
+        var sortElem = document.getElementById('sort');
+        var keys = Object.keys(counter);
+
+
+        if (e.target.id == "list") {
+            switch (sortElem.selectedIndex) {
+                case 0:
+                    outputElem.value = keys.join('\n');
+                    break;
+                case 1:
+                    outputElem.value = keys.reverse().join('\n');
+                    break;
+                case 2:
+                    var items = keys.map(function(key) {
+                        return [key, counter[key]];
+                    });
+
+                    items.sort(function(first, second) {
+                        return second[1] - first[1];
+                    });
+
+                    var output = '';
+                    for (var i = 0; i < keys.length; ++i) {
+                        output += items[i][0] + '\n';
+                    }
+                    outputElem.value = output;
+                    break;
+                case 3:
+                    var items = keys.map(function(key) {
+                        return [key, counter[key]];
+                    });
+
+                    items.sort(function(first, second) {
+                        return second[1] - first[1];
+                    });
+
+                    var output = '';
+                    for (var i = keys.length - 1; i >= 0; --i) {
+                        output += items[i][0] + '\n';
+                    }
+                    outputElem.value = output;
+                    break;
+                case 4:
+                    outputElem.value = keys.sort().join('\n');
+                    break;
+                case 5:
+                    outputElem.value = keys.sort().reverse().join('\n');
+                    break;
+
+            }
+        } else {
+            var output = '';
+            var values = Object.values(counter);
+
+            switch (sortElem.selectedIndex) {
+
+                case 0:
+                    for (var i = 0; i < keys.length; ++i) {
+                        output += keys[i] + '\t' + values[i] + '\n';
+                    }
+                    break;
+                case 1:
+                    for (var i = keys.length - 1; i >= 0; --i) {
+                        output += keys[i] + '\t' + values[i] + '\n';
+                    }
+                    break;
+                case 2:
+                    var items = keys.map(function(key) {
+                        return [key, counter[key]];
+                    });
+
+                    items.sort(function(first, second) {
+                        return second[1] - first[1];
+                    });
+
+                    for (var i = 0; i < keys.length; ++i) {
+                        output += items[i][0] + '\t' + items[i][1] + '\n';
+                    }
+                    break;
+                case 3:
+                    var items = keys.map(function(key) {
+                        return [key, counter[key]];
+                    });
+
+                    items.sort(function(first, second) {
+                        return second[1] - first[1];
+                    });
+
+                    for (var i = keys.length - 1; i >= 0; --i) {
+                        output += items[i][0] + '\t' + items[i][1] + '\n';
+                    }
+                    break;
+                case 4:
+                    var keysSorted = keys.sort();
+                    for (var i = 0; i < keys.length; ++i) {
+                        output += keysSorted[i] + '\t' + counter[keysSorted[i]] + '\n';
+                    }
+                    break;
+                case 5:
+                    var keysSorted = keys.sort();
+                    for (var i = keys.length - 1; i >= 0; --i) {
+                        output += keysSorted[i] + '\t' + counter[keysSorted[i]] + '\n';
+                    }
+                    break;
+
+            }
+            outputElem.value = output;
+        }
     }
     </script>
 </body>
