@@ -35,7 +35,7 @@
         var keys = Object.keys(counter);
 
 
-        if (e.target.id == "list") {
+        if (e.target.id === "list") {
             switch (sortElem.selectedIndex) {
                 case 0:
                     outputElem.value = keys.join('\n');
@@ -139,6 +139,9 @@
             }
             outputElem.value = output;
         }
+        var diff = inputSplit.length - keys.length;
+        var text = (diff === 1) ? 'entry' : 'entries';
+        document.getElementById('status').innerText = diff + ' ' + text + ' removed.';
     }
     </script>
 </body>
